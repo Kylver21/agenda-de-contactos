@@ -9,20 +9,23 @@ interface ContactFormProps {
 }
 
 function ContactForm({ onSubmit, editingContact, onUpdate, onCancelEdit }: ContactFormProps) {
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
+  const [nombre, setNombre] = useState('')
+  const [apellido, setApellido] = useState('')
+  const [email, setEmail] = useState('')
+  const [telefono, setTelefono] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
-    if (!name.trim() || !phone.trim()) {
+    if (!nombre.trim() || !apellido.trim() || !email.trim || !telefono.trim) {
       alert('Por favor complete todos los campos')
       return
     }
 
-    onSubmit({ name: name.trim(), phone: phone.trim() })
-    setName('')
-    setPhone('')
+    onSubmit({ nombre: nombre.trim(), apellido: apellido.trim(), email: email.trim(), telefono: telefono.trim() })
+    setNombre('')
+    setApellido('')
+    setEmail('')
+    setTelefono('')
   }
 
   return (
@@ -32,19 +35,39 @@ function ContactForm({ onSubmit, editingContact, onUpdate, onCancelEdit }: Conta
         <input
           type="text"
           id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
           placeholder="Ingrese el nombre"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="apellido">Apellido:</label>
+        <input
+          type="text"
+          id="apellido"
+          value={apellido}
+          onChange={(e) => setApellido(e.target.value)}
+          placeholder="Ingrese el apellido"
         />
       </div>
       
       <div className="form-group">
-        <label htmlFor="phone">Teléfono:</label>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="Ingrese el email"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="telefono">Teléfono:</label>
         <input
           type="tel"
-          id="phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          id="telefono"
+          value={telefono}
+          onChange={e => setTelefono(e.target.value)}
           placeholder="Ingrese el teléfono"
         />
       </div>
