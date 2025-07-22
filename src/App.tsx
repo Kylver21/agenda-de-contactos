@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Contact } from './types/Contact.tsx'
 import ContactForm from './components/ContactForm'
 import ContactList from './components/ContactList'
@@ -10,6 +10,16 @@ function App() {
   const [contacts, setContacts] = useState<Contact[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [editingContact, setEditingContact] = useState<Contact | null>(null)
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
+
+  useEffect(() => {
+    document.body.className = theme
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light')
+  }
 
   const handleAddContact = (contact: Omit<Contact, 'id'>) => {
     const newContact: Contact = {
@@ -45,10 +55,10 @@ function App() {
   })
 
   return (
-    <div className="app">
+    <div className={`app ${theme}`}>
       <header className="app-header">
         <h1>Agenda de Contactos</h1>
-        <ThemeToggle />
+        <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
       </header>
       
       <main className="app-main">

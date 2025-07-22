@@ -14,7 +14,6 @@ function ContactForm({ onSubmit, editingContact, onUpdate, onCancelEdit }: Conta
   const [email, setEmail] = useState('')
   const [telefono, setTelefono] = useState('')
 
-  // Cargar datos al editar
   useEffect(() => {
     if (editingContact) {
       setNombre(editingContact.nombre)
@@ -51,7 +50,6 @@ function ContactForm({ onSubmit, editingContact, onUpdate, onCancelEdit }: Conta
         telefono: telefono.trim()
       })
     }
-    // Limpiar formulario solo si no está editando
     if (!editingContact) {
       setNombre('')
       setApellido('')

@@ -1,11 +1,18 @@
-function ThemeToggle() {
-  const handleToggle = () => {
-    console.log('Cambiar tema')
-  }
+interface ThemeToggleProps {
+  theme: string
+  toggleTheme: () => void
+}
 
+function ThemeToggle({ theme, toggleTheme }: ThemeToggleProps) {
   return (
-    <button onClick={handleToggle} className="theme-toggle">
-      Tema
+    <button 
+      onClick={toggleTheme} 
+      className={`theme-toggle ${theme}`}
+      aria-label={`Cambiar a modo ${theme === 'light' ? 'oscuro' : 'claro'}`}
+    >
+      <span className="theme-text">
+        {theme === 'light' ? 'Modo Oscuro' : 'Modo Claro'}
+      </span>
     </button>
   )
 }
