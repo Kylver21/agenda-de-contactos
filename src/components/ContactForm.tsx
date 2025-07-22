@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Contact } from '../types/Contact.tsx'
 
 interface ContactFormProps {
@@ -14,18 +14,50 @@ function ContactForm({ onSubmit, editingContact, onUpdate, onCancelEdit }: Conta
   const [email, setEmail] = useState('')
   const [telefono, setTelefono] = useState('')
 
+  // Cargar datos al editar
+  useEffect(() => {
+    if (editingContact) {
+      setNombre(editingContact.nombre)
+      setApellido(editingContact.apellido)
+      setEmail(editingContact.email)
+      setTelefono(editingContact.telefono)
+    } else {
+      setNombre('')
+      setApellido('')
+      setEmail('')
+      setTelefono('')
+    }
+  }, [editingContact])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!nombre.trim() || !apellido.trim() || !email.trim || !telefono.trim) {
+    if (!nombre.trim() || !apellido.trim() || !email.trim() || !telefono.trim()) {
       alert('Por favor complete todos los campos')
       return
     }
-
-    onSubmit({ nombre: nombre.trim(), apellido: apellido.trim(), email: email.trim(), telefono: telefono.trim() })
-    setNombre('')
-    setApellido('')
-    setEmail('')
-    setTelefono('')
+    if (editingContact) {
+      onUpdate({
+        ...editingContact,
+        nombre: nombre.trim(),
+        apellido: apellido.trim(),
+        email: email.trim(),
+        telefono: telefono.trim()
+      })
+    } else {
+      onSubmit({
+        nombre: nombre.trim(),
+        apellido: apellido.trim(),
+        email: email.trim(),
+        telefono: telefono.trim()
+      })
+    }
+    // Limpiar formulario solo si no está editando
+    if (!editingContact) {
+      setNombre('')
+      setApellido('')
+      setEmail('')
+      setTelefono('')
+    }
   }
 
   return (
@@ -74,7 +106,7 @@ function ContactForm({ onSubmit, editingContact, onUpdate, onCancelEdit }: Conta
       
       <div className="form-actions">
         <button type="submit">
-          Agregar
+          {editingContact ? 'Actualizar' : 'Agregar'}
         </button>
         {editingContact && (
           <button type="button" onClick={onCancelEdit}>
